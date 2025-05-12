@@ -2,7 +2,7 @@ const express = require("express");
 const Alexa = require("ask-sdk-core");
 const { ExpressAdapter } = require("ask-sdk-express-adapter");
 const {
-  LaunchRequestHandler,
+    LaunchRequestHandler,
   AdmissionProcessIntentHandler,
   CollegeStartDateIntentHandler,
   UniformBooksIntentHandler,
@@ -14,6 +14,7 @@ const {
   IntentReflectorHandler,
   ErrorHandler,
 } = require("./handlers");
+require('dotenv').config();
 
 const skill = Alexa.SkillBuilders.custom()
   .addRequestHandlers(
@@ -31,11 +32,14 @@ const skill = Alexa.SkillBuilders.custom()
   .addErrorHandlers(ErrorHandler)
   .create();
 
+
+
 const app = express();
 const adapter = new ExpressAdapter(skill, true, true);
 
 app.post("/", adapter.getRequestHandlers());
 
-app.listen(3000, () => {
-  console.log("Alexa skill running on port 3000");
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Alexa skill running on port ${PORT}`);
 });
